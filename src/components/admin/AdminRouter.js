@@ -1,13 +1,18 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./Home/Home";
+import Navbar from "./Navbar/Navbar";
 
 function AdminRouter() {
     return(
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Home />} />
-            </Routes>
-        </BrowserRouter>
+        <>
+            <Navbar/>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                </Routes>
+            </BrowserRouter>
+
+        </>
     )
 }
 
