@@ -1,5 +1,5 @@
 import './Home.css'
-import {getRequest} from "../../../utils/RequestMaker";
+import {getDepartments} from "../../../utils/controllers/AuthControllers";
 
 const Home =()=>{
 
@@ -8,7 +8,13 @@ const Home =()=>{
             Home common
         </h1>
         <button onClick={async ()=>{
-            await getRequest("departments")
+            const res = await getDepartments();
+            if (res.data.Error === true){
+                console.log(res.data.Error)
+            }
+            else{
+                console.log(res.data);
+            }
         }}>Click</button>
     </>
 }
