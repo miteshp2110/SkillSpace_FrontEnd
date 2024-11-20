@@ -23,3 +23,26 @@ export async function getRequest(url){
 }
 
 
+export async function postRequest(url,body=null,header=null){
+    try{
+        const response = await axios.post(url,body,{headers:header});
+        return {
+            "data": {
+                "Error": false,
+                "data":response.data
+            }
+        };
+    }
+    catch(err){
+        return {
+            "data": {
+                "Error": true,
+                "data":null
+            }
+        };
+
+    }
+
+}
+
+

@@ -8,3 +8,4 @@ export async function getDepartments(){
     return await getRequest(url);
 }
 
+
