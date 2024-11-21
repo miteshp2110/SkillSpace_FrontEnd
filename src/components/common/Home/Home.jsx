@@ -1,5 +1,5 @@
 import './Home.css'
-import {getDepartments} from "../../../utils/controllers/AuthControllers";
+import {getDepartments, getRefreshToken, jwtStatus, login} from "../../../utils/controllers/AuthControllers";
 
 const Home =()=>{
 
@@ -7,15 +7,46 @@ const Home =()=>{
         <h1>
             Home common
         </h1>
-        <button onClick={async ()=>{
+        <button onClick={async () => {
             const res = await getDepartments();
-            if (res.data.Error === true){
+            if (res.data.Error === true) {
                 console.log(res.data.Error)
-            }
-            else{
+            } else {
                 console.log(res.data);
             }
-        }}>Click</button>
+        }}>departments
+        </button>
+        <br/>
+        <button onClick={async () => {
+            const res = await jwtStatus();
+            if (res.data.Error === true) {
+                console.log(res.data)
+            } else {
+                console.log(res.data);
+            }
+        }}>jwt status
+        </button>
+        <br/>
+        <button onClick={async () => {
+            const res = await getRefreshToken();
+            if (res.data.Error === true) {
+                console.log(res.data)
+            } else {
+                console.log(res.data);
+            }
+        }}>refresh Token
+        </button>
+        <br/>
+        <button onClick={async () => {
+            const res = await login("mitehpaliwal2110@gmail.com","12345678")
+            if (res.data.Error === true) {
+                console.log(res.data)
+            } else {
+                console.log(res.data);
+            }
+        }}>login
+        </button>
+
     </>
 }
 
