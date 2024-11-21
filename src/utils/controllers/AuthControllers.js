@@ -63,3 +63,37 @@ export async function signupStudent(email,password,formData){
         return "no"
     }
 }
+
+export async function sendEmailVerificationOtp(){
+    const url = `http://${host}:${port}/requestOtp`;
+    let header = {
+        Authorization:"Bearer "+sampleToken
+    }
+    return await postRequest(url,null,header);
+}
+
+export async function confirmEmailVerificationOtp(email,otp){
+    const url = `http://${host}:${port}/verifyOtp`;
+    let body={
+        "email":email,
+        "code":otp
+    }
+    return await postRequest(url,body,null)
+}
+
+export async function sendForgotPasswordEmail(email){
+    const url = `http://${host}:${port}/requestForgotPassword`;
+    let body = {
+        "email":email
+    }
+    return await postRequest(url,body,null)
+}
+export async function updatePassword(email,newPassword,otp){
+    const url = `http://${host}:${port}/updatePassword`;
+    let body={
+        "email":email,
+        "newPassword":newPassword,
+        "otp":otp
+    }
+    return await postRequest(url,body,null)
+}
