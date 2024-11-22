@@ -1,0 +1,150 @@
+.signupContainer{
+    background: black;
+    height: 70vh;
+    width: 60vw;
+    margin-top: 50px;
+    border-radius: 20px;
+    display: flex;
+}
+
+.signup{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    row-gap: 20px;
+}
+#openLeftContainer{
+    display: none;
+}
+
+.signupContainerRight{
+    background: mediumaquamarine;
+    height: 70vh;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.activeContainer{
+    width: 90%;
+}
+.deactiveContainer{
+    width: 10%;
+}
+
+.signupContainerLeft{
+    background: black;
+    height: 70vh;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+
+}
+.signupButton{
+    font-weight: lighter;
+    background: black;
+    color: mediumaquamarine;
+    font-size:20px;
+    padding: 15px;
+    border: none;
+    padding-inline:20px;
+    border-radius: 30px;
+}
+
+.openContainerButton{
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    padding-inline:20px; ;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.left{
+    color: black;
+}
+
+
+.inputField {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 16px;
+    color: #333;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border 0.3s, box-shadow 0.3s;
+    margin-bottom: 45px;
+}
+
+.inputField:focus {
+    border-color: #6c63ff;
+    box-shadow: 0 0 8px rgba(108, 99, 255, 0.2);
+}
+
+.inputField:focus + .input-label,
+.inputField:not(:placeholder-shown) + .input-label {
+    top: -8px;
+    font-size: 12px;
+    color: #6c63ff;
+}
+.sendOtpButton{
+    color: white;
+    margin-left: 50%;
+
+}
+
+.roundedButton {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(90deg, #6c63ff, #a084ff);
+    border: none;
+    border-radius: 30px;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-left: 45%;
+}
+
+.roundedButton:hover {
+    background: linear-gradient(90deg, #a084ff, #6c63ff);
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.roundedButton:active {
+    transform: translateY(1px);
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.roundedButton:disabled {
+    background: linear-gradient(90deg, #ccc, #ddd);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+.bottomText{
+    color: white;
+    margin-left: 30%;
+    margin-top: 40px;
+
+}
+
+.linkDecoration{
+    color: #6c63ff;
+}
+
+
+
+
