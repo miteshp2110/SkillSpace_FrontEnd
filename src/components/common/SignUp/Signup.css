@@ -19,14 +19,14 @@
 }
 
 .signupContainerRight{
-    background: mediumaquamarine;
+    background: #6c63ff;
     height: 70vh;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: all 0.7s ease;
 }
 
 .activeContainer{
@@ -44,13 +44,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: all 0.7s ease;
 
 }
 .signupButton{
     font-weight: lighter;
     background: black;
-    color: mediumaquamarine;
+    color: #6c63ff;
     font-size:20px;
     padding: 15px;
     border: none;
@@ -81,13 +81,20 @@
     border: 2px solid #ccc;
     border-radius: 8px;
     outline: none;
-    transition: border 0.3s, box-shadow 0.3s;
+    transition: all 0.3s, box-shadow 0.3s;
     margin-bottom: 45px;
-}
 
+}
+#branchSelector{
+    width: 107%;
+}
 .inputField:focus {
     border-color: #6c63ff;
     box-shadow: 0 0 8px rgba(108, 99, 255, 0.2);
+}
+textarea{
+    width: 100%;
+    resize: none;
 }
 
 .inputField:focus + .input-label,
@@ -143,6 +150,19 @@
 
 .linkDecoration{
     color: #6c63ff;
+}
+
+.signupMainRightContainer{
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+}
+#finishButton{
+    margin-left: 45%;
+    background: black;
 }
 
 

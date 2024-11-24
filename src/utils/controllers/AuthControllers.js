@@ -35,7 +35,7 @@ export async function login(email,password){
     return await postRequest(url,body,null)
 }
 
-async function signupStudentRegistration(email,password){
+export async function signupStudentRegistration(email,password){
     const url = `http://${host}:${port}/signupStudent`;
     let body ={
         "email":email,
@@ -44,30 +44,20 @@ async function signupStudentRegistration(email,password){
     return await postRequest(url,body,null)
 }
 
-async function completeStudentProfile(formData){
+export async function completeStudentProfile(formData,token){
     const url = `http://${host}:${port}/completeProfile/student`;
     let header = {
-        Authorization:"Bearer "+sampleToken
+        Authorization:"Bearer "+token
     }
     return await postRequest(url,formData,header)
 
 }
 
-export async function signupStudent(email,password,formData){
-    try{
-        const resp1 = await signupStudentRegistration(email,password)
-        console.log(resp1)
-        return "yes"
-    }
-    catch(err){
-        return "no"
-    }
-}
 
-export async function sendEmailVerificationOtp(){
+export async function sendEmailVerificationOtp(token){
     const url = `http://${host}:${port}/requestOtp`;
     let header = {
-        Authorization:"Bearer "+sampleToken
+        Authorization:"Bearer "+token
     }
     return await postRequest(url,null,header);
 }
