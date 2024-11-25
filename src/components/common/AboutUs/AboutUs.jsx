@@ -17,7 +17,9 @@ const AboutUs = () => {
             <section className="about-content">
                 <div className="about-image">
                     <img
-                        src="https://via.placeholder.com/300"
+
+                        style={{height:"250px"}}
+                        src="https://www.blogtyrant.com/wp-content/uploads/2011/02/best-about-us-pages.png"
                         // src="https://skillspaceprofileimages.s3.ap-south-1.amazonaws.com/aboutus.jpeg"
                         alt="SkillSpace illustration"
                     />

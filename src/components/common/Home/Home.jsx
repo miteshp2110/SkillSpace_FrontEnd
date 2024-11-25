@@ -25,7 +25,8 @@ const Home = () => {
                 button: 'Login',
             },
             image: {
-                src: 'https://via.placeholder.com/400',
+                src: 'https://skillspace.ai/wp-content/uploads/2022/01/Skillspace.ai-LP-1-min.png',
+                // src: 'https://via.placeholder.com/400',
                 alt: 'Introduction illustration',
             },
             reverse: false,
@@ -37,7 +38,8 @@ const Home = () => {
                     'Students can easily organize and showcase their projects on SkillSpace. Our platform helps you track milestones, visualize progress, and build a comprehensive portfolio that demonstrates your skills and creativity.',
             },
             image: {
-                src: 'https://via.placeholder.com/400',
+                src: 'https://skillspace.ai/wp-content/uploads/2021/12/g12-1.png',
+                // src: 'https://via.placeholder.com/400',
                 alt: 'Portfolio management illustration',
             },
             reverse: true,
@@ -49,7 +51,8 @@ const Home = () => {
                     'Teachers can review student projects, provide timely feedback, and resolve queries to ensure academic excellence. Our collaborative tools make it easy to mentor students and help them reach their full potential.',
             },
             image: {
-                src: 'https://via.placeholder.com/400',
+                // src: 'https://via.placeholder.com/400',
+                src: 'https://skillspace.ai/wp-content/uploads/2023/07/Untitled-design-66.png',
                 alt: 'Collaboration illustration',
             },
             reverse: false,
@@ -61,7 +64,7 @@ const Home = () => {
                     'At SkillSpace, we empower students and teachers to innovate. By providing a platform that focuses on collaboration, transparency, and growth, we aim to transform project management into an engaging and rewarding experience.',
             },
             image: {
-                src: 'https://via.placeholder.com/400',
+                src: 'https://skillspace.ai/wp-content/uploads/2021/12/g10-2.svg',
                 alt: 'Innovation illustration',
             },
             reverse: true,
@@ -81,7 +84,7 @@ const Home = () => {
                         {section.text.button && <button className="login-button" onClick={()=>{navigate("/login")}}>{section.text.button}</button>}
                     </div>
                     <div className="home-image">
-                        <img src={section.image.src} alt={section.image.alt} />
+                        <img src={section.image.src} alt={section.image.alt} style={{height:"400px",width:"400px"}} />
                     </div>
                 </section>
             ))}

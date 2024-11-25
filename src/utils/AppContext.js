@@ -59,8 +59,18 @@ export const AppProvider = ({ children }) => {
             localStorage.removeItem('email');
         }
     },[email])
+
+
+
+    function logout(){
+        localStorage.removeItem('jwt')
+        localStorage.removeItem('isLoggedIn')
+        localStorage.removeItem('role')
+        localStorage.removeItem('email')
+    }
+
     return (
-        <AppContext.Provider value={{ email, setEmail , jwt, setJwt , isLoggedIn, setIsLoggedIn , role, setRole }}>
+        <AppContext.Provider value={{ email, setEmail , jwt, setJwt , isLoggedIn, setIsLoggedIn , role, setRole ,logout }}>
             {children}
         </AppContext.Provider>
     )
