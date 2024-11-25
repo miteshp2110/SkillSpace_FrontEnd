@@ -1,153 +1,92 @@
-import './Home.css'
-import {
-    confirmEmailVerificationOtp,
-    getDepartments,
-    getRefreshToken,
-    jwtStatus,
-    login,
-    sendEmailVerificationOtp, sendForgotPasswordEmail, updatePassword
-} from "../../../utils/controllers/AuthControllers";
+import React from 'react';
+import './Home.css';
+import ScrollReveal from 'scrollreveal';
+import {useNavigate} from "react-router-dom";
 
-const Home =()=>{
+const Home = () => {
 
-    return <>
-        <h1>
-            Home common
-        </h1>
-        <button onClick={async () => {
-            const res = await getDepartments();
-            if (res.data.Error === true) {
-                console.log(res.data.Error)
-            } else {
-                console.log(res.data);
-            }
-        }}>departments
-        </button>
-        <br/>
-        <button onClick={async () => {
-            const res = await jwtStatus();
-            if (res.data.Error === true) {
-                console.log(res.data)
-            } else {
-                console.log(res.data);
-            }
-        }}>jwt status
-        </button>
-        <br/>
-        <button onClick={async () => {
-            const res = await getRefreshToken();
-            if (res.data.Error === true) {
-                console.log(res.data)
-            } else {
-                console.log(res.data);
-            }
-        }}>refresh Token
-        </button>
-        <br/>
-        <button onClick={async () => {
-            const res = await login("sbibank3829@gmail.com", "gendu")
-            if (res.data.Error === true) {
-                console.log(res.data)
-            } else {
-                console.log(res.data);
-            }
-        }}>login
-        </button>
-        <br/>
-        <button onClick={async () => {
-            const res = await sendEmailVerificationOtp()
-            if (res.data.Error === true) {
-                console.log(res.data)
-            } else {
-                console.log(res.data);
-            }
-        }}>otp
-        </button>
-        <br/>
-        <button onClick={async () => {
-            const res = await confirmEmailVerificationOtp("paliwalmitesh2110@gmail.com", 2429)
-            if (res.data.Error === true) {
-                console.log(res.data.status === 400 ? "WrongOTP" : "Invalid Reqeust")
-            } else {
-                console.log(res.data);
-            }
-        }}>otp confirm
-        </button>
-        <br/>
-        <button onClick={async () => {
-            const res = await sendForgotPasswordEmail("sbibank3829@gmail.com")
-            if (res.data.Error === true) {
-                console.log(res.data.status)
-            } else {
-                console.log(res.data);
-            }
-        }}>forgt pass Otp
-        </button>
+    const navigate  = useNavigate();
 
-        <br/>
-        <button onClick={async () => {
-            const res = await updatePassword("sbibank3829@gmail.com","gendu",7408)
-            if (res.data.Error === true) {
-                console.log(res.data.status === 400 ? "WrongOTP" : "Invalid Reqeust")
-            } else {
-                console.log(res.data);
-            }
-        }}>update Password
-        </button>
-        <p>
-            There are multiple matches for 1000 words, including a movie, a list of words, and how many pages 1000 words is:
-            A Thousand Words: A 2012 movie about a dishonest agent who is cursed to die if he speaks more than 1,000 words. The movie stars Eddie Murphy, Kerry Washington, and Clark Duke, and was directed by Brian Robbins.
-            List of 1,000 most common words: A list of the 1,000 most frequently used English words in alphabetical order. You can use this list to improve your vocabulary by copying it into a flashcard app or printing it out.
-            Number of pages for 1,000 words: 1,000 words written by hand is roughly four pages long. This is because handwriting takes up about twice as much space as 12 pt Times New Roman text.
-            My First 1,000 Words: An early learning picture book that helps children learn the alphabet.
-            Vocabulary.com Top 1,000: A vocabulary list that includes teaching tools like quizzes, activities, and spelling bees.
-            Wikipedia: List of 1,000 basic words: A list of 1,000 basic words on Wikipedia.There are multiple matches for 1000 words, including a movie, a list of words, and how many pages 1000 words is:
-            A Thousand Words: A 2012 movie about a dishonest agent who is cursed to die if he speaks more than 1,000 words. The movie stars Eddie Murphy, Kerry Washington, and Clark Duke, and was directed by Brian Robbins.
-            List of 1,000 most common words: A list of the 1,000 most frequently used English words in alphabetical order. You can use this list to improve your vocabulary by copying it into a flashcard app or printing it out.
-            Number of pages for 1,000 words: 1,000 words written by hand is roughly four pages long. This is because handwriting takes up about twice as much space as 12 pt Times New Roman text.
-            My First 1,000 Words: An early learning picture book that helps children learn the alphabet.
-            Vocabulary.com Top 1,000: A vocabulary list that includes teaching tools like quizzes, activities, and spelling bees.
-            Wikipedia: List of 1,000 basic words: A list of 1,000 basic words on Wikipedia.There are multiple matches for 1000 words, including a movie, a list of words, and how many pages 1000 words is:
-            A Thousand Words: A 2012 movie about a dishonest agent who is cursed to die if he speaks more than 1,000 words. The movie stars Eddie Murphy, Kerry Washington, and Clark Duke, and was directed by Brian Robbins.
-            List of 1,000 most common words: A list of the 1,000 most frequently used English words in alphabetical order. You can use this list to improve your vocabulary by copying it into a flashcard app or printing it out.
-            Number of pages for 1,000 words: 1,000 words written by hand is roughly four pages long. This is because handwriting takes up about twice as much space as 12 pt Times New Roman text.
-            My First 1,000 Words: An early learning picture book that helps children learn the alphabet.
-            Vocabulary.com Top 1,000: A vocabulary list that includes teaching tools like quizzes, activities, and spelling bees.
-            Wikipedia: List of 1,000 basic words: A list of 1,000 basic words on Wikipedia.There are multiple matches for 1000 words, including a movie, a list of words, and how many pages 1000 words is:
-            A Thousand Words: A 2012 movie about a dishonest agent who is cursed to die if he speaks more than 1,000 words. The movie stars Eddie Murphy, Kerry Washington, and Clark Duke, and was directed by Brian Robbins.
-            List of 1,000 most common words: A list of the 1,000 most frequently used English words in alphabetical order. You can use this list to improve your vocabulary by copying it into a flashcard app or printing it out.
-            Number of pages for 1,000 words: 1,000 words written by hand is roughly four pages long. This is because handwriting takes up about twice as much space as 12 pt Times New Roman text.
-            My First 1,000 Words: An early learning picture book that helps children learn the alphabet.
-            Vocabulary.com Top 1,000: A vocabulary list that includes teaching tools like quizzes, activities, and spelling bees.
-            Wikipedia: List of 1,000 basic words: A list of 1,000 basic words on Wikipedia.There are multiple matches for 1000 words, including a movie, a list of words, and how many pages 1000 words is:
-            A Thousand Words: A 2012 movie about a dishonest agent who is cursed to die if he speaks more than 1,000 words. The movie stars Eddie Murphy, Kerry Washington, and Clark Duke, and was directed by Brian Robbins.
-            List of 1,000 most common words: A list of the 1,000 most frequently used English words in alphabetical order. You can use this list to improve your vocabulary by copying it into a flashcard app or printing it out.
-            Number of pages for 1,000 words: 1,000 words written by hand is roughly four pages long. This is because handwriting takes up about twice as much space as 12 pt Times New Roman text.
-            My First 1,000 Words: An early learning picture book that helps children learn the alphabet.
-            Vocabulary.com Top 1,000: A vocabulary list that includes teaching tools like quizzes, activities, and spelling bees.
-            Wikipedia: List of 1,000 basic words: A list of 1,000 basic words on Wikipedia.There are multiple matches for 1000 words, including a movie, a list of words, and how many pages 1000 words is:
-            A Thousand Words: A 2012 movie about a dishonest agent who is cursed to die if he speaks more than 1,000 words. The movie stars Eddie Murphy, Kerry Washington, and Clark Duke, and was directed by Brian Robbins.
-            List of 1,000 most common words: A list of the 1,000 most frequently used English words in alphabetical order. You can use this list to improve your vocabulary by copying it into a flashcard app or printing it out.
-            Number of pages for 1,000 words: 1,000 words written by hand is roughly four pages long. This is because handwriting takes up about twice as much space as 12 pt Times New Roman text.
-            My First 1,000 Words: An early learning picture book that helps children learn the alphabet.
-            Vocabulary.com Top 1,000: A vocabulary list that includes teaching tools like quizzes, activities, and spelling bees.
-            Wikipedia: List of 1,000 basic words: A list of 1,000 basic words on Wikipedia.There are multiple matches for 1000 words, including a movie, a list of words, and how many pages 1000 words is:
-            A Thousand Words: A 2012 movie about a dishonest agent who is cursed to die if he speaks more than 1,000 words. The movie stars Eddie Murphy, Kerry Washington, and Clark Duke, and was directed by Brian Robbins.
-            List of 1,000 most common words: A list of the 1,000 most frequently used English words in alphabetical order. You can use this list to improve your vocabulary by copying it into a flashcard app or printing it out.
-            Number of pages for 1,000 words: 1,000 words written by hand is roughly four pages long. This is because handwriting takes up about twice as much space as 12 pt Times New Roman text.
-            My First 1,000 Words: An early learning picture book that helps children learn the alphabet.
-            Vocabulary.com Top 1,000: A vocabulary list that includes teaching tools like quizzes, activities, and spelling bees.
-            Wikipedia: List of 1,000 basic words: A list of 1,000 basic words on Wikipedia.There are multiple matches for 1000 words, including a movie, a list of words, and how many pages 1000 words is:
-            A Thousand Words: A 2012 movie about a dishonest agent who is cursed to die if he speaks more than 1,000 words. The movie stars Eddie Murphy, Kerry Washington, and Clark Duke, and was directed by Brian Robbins.
-            List of 1,000 most common words: A list of the 1,000 most frequently used English words in alphabetical order. You can use this list to improve your vocabulary by copying it into a flashcard app or printing it out.
-            Number of pages for 1,000 words: 1,000 words written by hand is roughly four pages long. This is because handwriting takes up about twice as much space as 12 pt Times New Roman text.
-            My First 1,000 Words: An early learning picture book that helps children learn the alphabet.
-            Vocabulary.com Top 1,000: A vocabulary list that includes teaching tools like quizzes, activities, and spelling bees.
-            Wikipedia: List of 1,000 basic words: A list of 1,000 basic words on Wikipedia.
-            Wikipedia: List of 1,000 basic words: A list of 1,000 basic words on Wikipedia.
-        </p>
+    React.useEffect(() => {
+        ScrollReveal().reveal('.home-section', {
+            origin: 'bottom',
+            distance: '50px',
+            duration: 1000,
+            reset: true,
+        });
+    }, []);
 
-    </>
-}
+    const sections = [
+        {
+            text: {
+                heading: 'Welcome to SkillSpace',
+                content:
+                    'SkillSpace is your ultimate platform for managing student projects and fostering effective communication between students and teachers. Upload your projects, track progress, and receive valuable feedback from mentors who care about your success.',
+                button: 'Login',
+            },
+            image: {
+                src: 'https://via.placeholder.com/400',
+                alt: 'Introduction illustration',
+            },
+            reverse: false,
+        },
+        {
+            text: {
+                heading: 'Streamlined Portfolio Management',
+                content:
+                    'Students can easily organize and showcase their projects on SkillSpace. Our platform helps you track milestones, visualize progress, and build a comprehensive portfolio that demonstrates your skills and creativity.',
+            },
+            image: {
+                src: 'https://via.placeholder.com/400',
+                alt: 'Portfolio management illustration',
+            },
+            reverse: true,
+        },
+        {
+            text: {
+                heading: 'Teacher-Student Collaboration',
+                content:
+                    'Teachers can review student projects, provide timely feedback, and resolve queries to ensure academic excellence. Our collaborative tools make it easy to mentor students and help them reach their full potential.',
+            },
+            image: {
+                src: 'https://via.placeholder.com/400',
+                alt: 'Collaboration illustration',
+            },
+            reverse: false,
+        },
+        {
+            text: {
+                heading: 'Fostering Innovation',
+                content:
+                    'At SkillSpace, we empower students and teachers to innovate. By providing a platform that focuses on collaboration, transparency, and growth, we aim to transform project management into an engaging and rewarding experience.',
+            },
+            image: {
+                src: 'https://via.placeholder.com/400',
+                alt: 'Innovation illustration',
+            },
+            reverse: true,
+        },
+    ];
 
-export default Home
+    return (
+        <div className="home-container">
+            {sections.map((section, index) => (
+                <section
+                    key={index}
+                    className={`home-section ${section.reverse ? 'alternate-section' : ''}`}
+                >
+                    <div className="home-text">
+                        <h2>{section.text.heading}</h2>
+                        <p>{section.text.content}</p>
+                        {section.text.button && <button className="login-button" onClick={()=>{navigate("/login")}}>{section.text.button}</button>}
+                    </div>
+                    <div className="home-image">
+                        <img src={section.image.src} alt={section.image.alt} />
+                    </div>
+                </section>
+            ))}
+        </div>
+    );
+};
+
+export default Home;
