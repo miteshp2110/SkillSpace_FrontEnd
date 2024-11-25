@@ -1,0 +1,24 @@
+.footer {
+    position: static;
+    bottom: 0;
+    background-color: black;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    height: fit-content;
+    margin-top: 50px;
+}
+
+.footer-link {
+    color: white;
+    margin-right: 15px;
+    text-decoration: none;
+}
+
+.footer-link:last-child {
+    margin-right: 0;
+}
+
+.footer-company {
+    margin-top: 10px;
+}

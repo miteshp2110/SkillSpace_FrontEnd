@@ -1,4 +1,4 @@
-import {BrowserRouter, Navigate, Route, Routes, useNavigate} from "react-router-dom";
+import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import Home from "./Home/Home";
 import Login from "./Login/Login";
 import Navbar from "./Navbar/Navbar";
@@ -7,6 +7,7 @@ import AboutUs from "./AboutUs/AboutUs";
 import {useContext} from "react";
 import {AppContext} from "../../utils/AppContext";
 import ForgotPassword from "./ForgotPassword/ForgotPassword";
+import Footer from "./Footer/Footer";
 
 function CommonRouter() {
     const {isLoggedIn} = useContext(AppContext);
@@ -24,6 +25,7 @@ function CommonRouter() {
                     <Route path="/about" element={<AboutUs />} />
                     <Route path="/forgotPassword" element={isLoggedIn==='true'?<Navigate to="/"/>:<ForgotPassword />} />
                 </Routes>
+                <Footer/>
             </BrowserRouter>
         </div>
         </>
