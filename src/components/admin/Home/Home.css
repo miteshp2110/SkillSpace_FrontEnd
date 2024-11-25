@@ -1,0 +1,138 @@
+.adminHomeContainer{
+    display: flex;
+    width: 96vw;
+    height: 80vh;
+    padding-inline: 2vw;
+    margin-top: 20px ;
+    flex-direction: column;
+
+
+}
+
+.statsContainer{
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    height: fit-content;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.statItem{
+    font-size: 1.7rem;
+    font-weight: normal;
+    letter-spacing: 3px;
+    margin-right: 1vw;
+    margin-left: 1vw;
+
+}
+.counter{
+    background-color: black;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 20px;
+}
+
+.adminMainContainer{
+    margin-top: 20px;
+    display: flex;
+    height: 65vh;
+    width: 100%;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.teacherListContainer{
+    display: flex;
+    height: 100%;
+    width: 45%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-left: 15px;
+    justify-content: start;
+    overflow: scroll;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.listItemContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+}
+
+.listItemCard{
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.listItemId{
+    margin-left: 15px;
+}
+.listItemVerified{
+    margin-right: 15px;
+}
+
+.teacherListContainer::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
+
+.adminListContainer{
+    margin-right: 15px;
+    display: flex;
+    height: 100%;
+    width: 45%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding-left: 20px;
+    padding-right: 20px;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userCreationContainer{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: 50vh;
+    padding: 20px;
+    padding-right: 5vw;
+    padding-left: 5vw;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    align-items: center;
+}
+.userCreationContainer h2{
+    margin-bottom: 10px;
+}
+
+#createUserButton{
+    margin-left: 15px;
+}
