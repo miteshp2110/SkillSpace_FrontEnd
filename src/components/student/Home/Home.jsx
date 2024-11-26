@@ -4,6 +4,7 @@ import ScrollReveal from "scrollreveal";
 import ChatSection from "../../common/ChatSection/ChatSection";
 import {checkerFunction} from "../../../utils/Helpers";
 import {
+    getAllIssuesStudent,
     getAllProjectsStudent,
     getCompletedProjectStudent,
     getFeedbackStudent,
@@ -44,8 +45,38 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
+        if(activeTab === "issues"){
+            const currPrj = selectedProject
 
-    },[]);
+            const init = async () => {
+                const iss = (await getAllIssuesStudent(jwt,selectedProject.id)).data.data.issues
+                currPrj.issues = iss;
+                const issueCardContainer = document.getElementById("issueCardContainer");
+                iss.forEach((issue)=>{
+                    const issueCard = document.createElement("div");
+                    issueCard.key = issue.issue_id;
+                    issueCard.classList.add("issue-card");
+
+                    const issueCardTitle = document.createElement("div");
+                    issueCardTitle.classList.add("issue-card-title");
+                    issueCardTitle.innerText = issue.issue_title;
+
+                    const issueCardStatus = document.createElement("div");
+                    issueCardStatus.classList.add("issue-card-status");
+                    issueCardStatus.innerText = issue.issue_status===true?"Active":"Inactive";
+
+                    issueCard.appendChild(issueCardTitle);
+                    issueCard.appendChild(issueCardStatus);
+                    issueCardContainer.appendChild(issueCard);
+                })
+                setSelectedProject(currPrj);
+
+            }
+
+            init()
+        }
+
+    },[activeTab]);
 
 
     useEffect(() => {
@@ -225,7 +256,12 @@ const Home = () => {
                         )}
                         {activeTab === "issues" && (
                             <div className="issues-tab">
-                                <button>Add Issue</button>
+                                <button className={"add-issue"}>Add Issue</button>
+
+                                <div className={"issue-cards-container"} id={"issueCardContainer"}>
+
+
+                                </div>
 
                                 {/*<ChatSection selectedProject={selectedProject}/>*/}
                             </div>
