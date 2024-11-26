@@ -21,7 +21,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "run": "set REACT_APP_AUTH_SERVICE_HOST=127.0.0.1&& set REACT_APP_AUTH_SERVICE_PORT=8080&& set REACT_APP_ADMIN_SERVICE_HOST=127.0.0.1&& set REACT_APP_ADMIN_SERVICE_PORT=8083&& npm start"
+    "run": "set REACT_APP_AUTH_SERVICE_HOST=127.0.0.1&& set REACT_APP_AUTH_SERVICE_PORT=8080&& set REACT_APP_ADMIN_SERVICE_HOST=127.0.0.1&& set REACT_APP_ADMIN_SERVICE_PORT=8083&& set REACT_APP_STUDENT_SERVICE_HOST=127.0.0.1&& set REACT_APP_STUDENT_SERVICE_PORT=8081&&  npm start"
   },
   "eslintConfig": {
     "extends": [
