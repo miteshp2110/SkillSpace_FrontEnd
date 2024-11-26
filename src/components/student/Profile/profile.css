@@ -1,0 +1,82 @@
+/* Profile.css */
+.profile-section {
+    padding: 2rem;
+    max-width: 600px;
+    margin: 2rem auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    background-color: #e0e0e0;
+    border-radius: 50%;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile-image::after {
+    content: "👤";
+    font-size: 80px;
+    color: #9e9e9e;
+}
+
+.profile-name {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.profile-branch {
+    font-size: 1.4rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+.profile-bio {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.8;
+}
+
+.profile-email {
+    display: inline-block;
+    font-size: 1.1rem;
+    color: #007bff;
+    text-decoration: none;
+    border: 1px solid #007bff;
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-bottom: 2rem;
+}
+
+.profile-email:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.logout-button {
+    align-self: center;
+    width: 20%;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #ff4d4f;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #e04343;
+}
