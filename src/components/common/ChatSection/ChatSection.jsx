@@ -1,34 +1,91 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {AppContext} from "../../../utils/AppContext";
+import {
+    getIssueChatsStudent,
+    getIssueDetailsStudent, markIssueSolvedStudent,
+    postIssueChat
+} from "../../../utils/controllers/StudentController";
 
-const ChatSection = ({selectedProject,status}) => {
-    const {email} = useContext(AppContext)
+const ChatSection = ({issueId,closeFun}) => {
+
+    const [issueDetails, setIssueDetails] = useState();
+    const [chats, setChats] = useState([]);
+    const [messages, setMessages] = useState("");
+
+    const {email,jwt} = useContext(AppContext)
+    useEffect(() => {
+        const init = async () => {
+            const res = (await getIssueDetailsStudent(jwt,issueId)).data.data.issues
+            setIssueDetails(res)
+            const chats = (await getIssueChatsStudent(jwt,res.issue_id)).data.data.chats
+            setChats(chats)
+        }
+        init()
+    }, []);
+
+    async function solveIssue(){
+        const res = (await markIssueSolvedStudent(jwt,issueDetails.issue_id))
+        if(res.data.Error){
+            alert("Some Error Occured")
+        }
+        else{
+            alert("Issue Solved")
+            window.location.reload();
+        }
+    }
+
+    async function addMessage(){
+        const res = (await postIssueChat(jwt,issueDetails.issue_id,messages))
+        if(res.data.Error){
+            alert("Some Error Occured")
+        }
+        else{
+            const chatSec=document.getElementById("chatSec")
+            const msgElem = document.createElement("div");
+            msgElem.classList.add("chat-message")
+            msgElem.classList.add("right")
+            msgElem.innerText=messages
+            chatSec.appendChild(msgElem);
+            const msgInpu = document.getElementById("msgInpu")
+            msgInpu.value=""
+
+        }
+    }
+
+
+    if(!issueDetails){
+        return (<></>)
+    }
+
     return (
         <>
             <div className="chat-section-container">
-                <button className={'close-chats-button'}> ←</button>
-                <h1>Title</h1>
-                <h3>Learning React is exciting for developetions es virtual DOM optimizes performance, while tools like hooks enhance functionality. Its vast ecosystem, including libraries like Redux, ensures robust solutions for modern web development.</h3>
-                <button className={"mark-as-solved finish-button"}>Mark as Solved</button>
-                <div className="chat-section">
-                    {selectedProject.issues.map((issue, index) => (
+                <button className={'close-chats-button'} onClick={()=>{closeFun()}}> ←</button>
+                <h1>{issueDetails.issue_title}</h1>
+                <h3>{issueDetails.issue_description}</h3>
+                {issueDetails.issue_status ? <button className={"mark-as-solved finish-button"}
+                 onClick={async ()=>{await solveIssue()}}
+                >Mark as Solved</button>:""}
+                <div className="chat-section" id={"chatSec"}>
+                    {chats.map((chat,index) => (
                         <div
                             key={index}
                             className={`chat-message ${
-                                issue.email === email ? "right" : "left"
+                                chat.sender_email === email ? "right" : "left"
                             }`}
                         >
-                            {issue.message}
+                            {chat.message}
                         </div>
                     ))}
                 </div>
-                <div className="chat-input">
+                <div className="chat-input" style={{display:`${issueDetails.issue_status?"flex":"none"}`}}>
                     <input
-                        disabled={status}
+                        onChange={(event) =>{setMessages(event.target.value)}}
                         type="text"
                         placeholder="Type a message..."
+                        id={"msgInpu"}
                     />
-                    <button>Send</button>
+                    <button onClick={async () =>{await addMessage()}} >Send</button>
                 </div>
 
             </div>

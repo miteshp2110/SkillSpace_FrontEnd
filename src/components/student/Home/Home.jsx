@@ -4,6 +4,8 @@ import ScrollReveal from "scrollreveal";
 import ChatSection from "../../common/ChatSection/ChatSection";
 import {checkerFunction} from "../../../utils/Helpers";
 import {
+    addIssueStudent,
+    getAllIssuesStudent,
     getAllProjectsStudent,
     getCompletedProjectStudent,
     getFeedbackStudent,
@@ -11,7 +13,7 @@ import {
     getOpenIssueCountStudent,
     getProjectDetailsStudent,
     getProjectMediaStudent,
-    getTotalProjectStudent
+    getTotalProjectStudent, updateProjectStatus
 } from "../../../utils/controllers/StudentController";
 import {AppContext} from "../../../utils/AppContext";
 import CountUp from "react-countup";
@@ -25,13 +27,19 @@ const Home = () => {
     const [total, setTotal] = useState(0);
     const [completed, setCompleted] = useState(0);
     const [ongoing, setOngoing] = useState(0);
+    const [addIssueTab,setAddIssueTab] = useState(false);
+    const [issueTitle,setIssueTitle] = useState("");
+    const [issueDescription,setIssueDescription] = useState("");
+    const [activeIssueCard, setActiveIssueCard] = useState(null);
+
+
 
     useEffect(() => {
         const init = async () => {
 
-            const tp = (checkerFunction(await getTotalProjectStudent(jwt))).data.count
-            const op = (checkerFunction(await getOngoingProjectStudent(jwt))).data.count
-            const cp = (checkerFunction(await getCompletedProjectStudent(jwt))).data.count
+            const tp = (checkerFunction(await getTotalProjectStudent(jwt),logout)).data.count
+            const op = (checkerFunction(await getOngoingProjectStudent(jwt),logout)).data.count
+            const cp = (checkerFunction(await getCompletedProjectStudent(jwt),logout)).data.count
             setOngoing(op)
             setCompleted(cp)
             setTotal(tp)
@@ -44,8 +52,42 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
+        if(activeTab === "issues"){
+            const currPrj = selectedProject
 
-    },[]);
+            const init = async () => {
+                const iss = (await getAllIssuesStudent(jwt,selectedProject.id)).data.data.issues
+                currPrj.issues = iss;
+                const issueCardContainer = document.getElementById("issueCardContainer");
+                iss.forEach((issue)=>{
+                    const issueCard = document.createElement("div");
+                    issueCard.key = issue.issue_id;
+                    issueCard.onclick = ()=>{
+                        setActiveIssueCard(issueCard.key);
+                        toggleActiveIssueTab(true)
+                    }
+                    issueCard.classList.add("issue-card");
+
+                    const issueCardTitle = document.createElement("div");
+                    issueCardTitle.classList.add("issue-card-title");
+                    issueCardTitle.innerText = issue.issue_title;
+
+                    const issueCardStatus = document.createElement("div");
+                    issueCardStatus.classList.add("issue-card-status");
+                    issueCardStatus.innerText = issue.issue_status===true?"Active":"Inactive";
+
+                    issueCard.appendChild(issueCardTitle);
+                    issueCard.appendChild(issueCardStatus);
+                    issueCardContainer.appendChild(issueCard);
+                })
+                setSelectedProject(currPrj);
+
+            }
+
+            init()
+        }
+
+    },[activeTab]);
 
 
     useEffect(() => {
@@ -94,13 +136,68 @@ const Home = () => {
             }
         setSelectedProject(currProj);
         setActiveTab("details");
-        document.body.style.overflow = "hidden"; // Prevent scrolling
+        document.body.style.overflow = "hidden";
     };
 
     const closeProjectDetails = () => {
         setSelectedProject(null);
-        document.body.style.overflow = ""; // Restore scrolling
+        document.body.style.overflow = "";
     };
+
+    function toggleAddIssueTab(){
+        const issueCardContainer = document.getElementById("issueCardContainer")
+        const addissuecontainer = document.getElementById("add-issue-container")
+        if(addIssueTab===false){
+            setAddIssueTab(true)
+            issueCardContainer.style.display = "none";
+            addissuecontainer.style.display = "block"
+        }
+        else{
+            setAddIssueTab(false)
+            issueCardContainer.style.display = "block";
+            addissuecontainer.style.display = "none"
+        }
+
+    }
+
+    async function addStudentIssue(){
+        const res = await addIssueStudent(jwt,selectedProject.id,issueTitle,issueDescription)
+        if(res.data.Error === true){
+            alert("Some Error Occured")
+        }
+        else{
+            alert("Issue Added...")
+            window.location.reload();
+        }
+    }
+
+    function toggleActiveIssueTab(open){
+
+        const issueCardContainer = document.getElementById("issueCardContainer")
+        const addissue = document.getElementById("add-issue")
+        if(open === true){
+            issueCardContainer.style.display = "none"
+            addissue.style.display = "none"
+        }
+        else{
+            setActiveIssueCard(null)
+            issueCardContainer.style.display = "block";
+            addissue.style.display = "block"
+
+        }
+
+    }
+
+    async function completeProject(){
+        const res = await updateProjectStatus(jwt,selectedProject.id)
+        if(res.data.Error === true){
+            alert("Some Error Occured")
+        }
+        else{
+            alert("Project Marked as Completed")
+            window.location.reload()
+        }
+    }
 
 
     return (
@@ -214,7 +311,7 @@ const Home = () => {
                                 </div>
 
                                 {selectedProject.completed ? <div></div> :
-                                    <button className="finish-button">Mark Project as Finished</button>}
+                                    <button className="finish-button" onClick={async () =>{await completeProject()}}>Mark Project as Finished</button>}
                             </div>
                         )}
                         {activeTab === "feedback" && (
@@ -225,9 +322,31 @@ const Home = () => {
                         )}
                         {activeTab === "issues" && (
                             <div className="issues-tab">
-                                <button>Add Issue</button>
+                                <button id={"add-issue"} disabled={selectedProject.endDate!=="-"} className={"add-issue"} onClick={() => {
+                                    toggleAddIssueTab()
+                                }}>{addIssueTab ? "Close" : "Add Issue"}</button>
 
-                                {/*<ChatSection selectedProject={selectedProject}/>*/}
+                                <div className={"issue-cards-container"} id={"issueCardContainer"}>
+
+
+                                </div>
+
+                                <div className={"add-issue-container"} id={"add-issue-container"}
+                                     style={{display: "none"}}>
+                                    <input type={"text"} maxLength={15} placeholder={"Title"} className={"inputField"}
+                                           onChange={(event) => {
+                                               setIssueTitle(event.target.value)
+                                           }}/>
+                                    <input placeholder={"Description"} className={"inputField"} onChange={(event) => {
+                                        setIssueDescription(event.target.value)
+                                    }}/>
+                                    <button className={"roundedButton reqBtn low-margin"} onClick={async () => {
+                                        await addStudentIssue()
+                                    }}>Add
+                                    </button>
+                                </div>
+
+                                {activeIssueCard!==null?<ChatSection issueId = {activeIssueCard} closeFun = {toggleActiveIssueTab}/>:""}
                             </div>
 
 
