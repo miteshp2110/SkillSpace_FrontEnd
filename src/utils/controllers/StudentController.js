@@ -35,14 +35,14 @@ export async function getOngoingProjectStudent(jwt){
     return await postRequest(url,null,header);
 }
 
-export async function updateProjectStatus(jwt,status,projectId){
+export async function updateProjectStatus(jwt,projectId){
     const url = uri + "/updateProjectStatus";
     let header = {
         Authorization:"Bearer "+jwt
     }
     let body = {
         "project_id":projectId,
-        "status":status,
+        "status":4,
     }
     return await postRequest(url,body,header);
 }
