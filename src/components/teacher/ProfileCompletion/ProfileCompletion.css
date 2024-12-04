@@ -1,0 +1,39 @@
+/* SimpleForm.css */
+
+.form-container {
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    font-family: Arial, sans-serif;
+    border-radius: 15px;
+    width: 30vw;
+}
+
+#name{
+    width: 90%;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+
+
+
+
+.submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
