@@ -1,8 +1,18 @@
 import './Forgotpassword.css'
-import {useState} from "react";
+import React, {useState} from "react";
 import {sendForgotPasswordEmail, updatePassword} from "../../../utils/controllers/AuthControllers";
+import ScrollReveal from "scrollreveal";
 
 const ForgotPassword = () => {
+
+    React.useEffect(() => {
+        ScrollReveal().reveal('.loginContainer', {
+            origin: 'bottom',
+            distance: '50px',
+            duration: 1000,
+            reset: true,
+        });
+    }, []);
 
     const [email,setEmail] = useState('')
     const [password, setPassword] = useState('')

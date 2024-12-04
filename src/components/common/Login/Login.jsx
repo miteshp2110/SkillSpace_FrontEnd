@@ -1,10 +1,22 @@
 import './Login.css'
-import {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {login} from "../../../utils/controllers/AuthControllers";
 import {AppContext} from "../../../utils/AppContext";
 import {useNavigate} from "react-router-dom";
+import ScrollReveal from "scrollreveal";
 
 const Login = () => {
+
+
+    React.useEffect(() => {
+        ScrollReveal().reveal('.loginContainer', {
+            origin: 'bottom',
+            distance: '50px',
+            duration: 1000,
+            reset: true,
+        });
+    }, []);
+
     const navigate = useNavigate();
 
     const {setEmail,setRole,setJwt,setIsLoggedIn} = useContext(AppContext)

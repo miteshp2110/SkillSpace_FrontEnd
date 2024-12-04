@@ -17,6 +17,7 @@ import {
 } from "../../../utils/controllers/StudentController";
 import {AppContext} from "../../../utils/AppContext";
 import CountUp from "react-countup";
+import {useNavigate} from "react-router-dom";
 
 const Home = () => {
     const {jwt,logout}  = useContext(AppContext);
@@ -31,6 +32,8 @@ const Home = () => {
     const [issueTitle,setIssueTitle] = useState("");
     const [issueDescription,setIssueDescription] = useState("");
     const [activeIssueCard, setActiveIssueCard] = useState(null);
+
+    const navigate = useNavigate();
 
 
 
@@ -214,6 +217,8 @@ const Home = () => {
                 </div>
             </div>
             <div className="projects-column">
+
+                {total===0?<button className={'login-button'} onClick={()=>{navigate("/addproject")}}>Add Project</button>:""}
                 {projectArrays.map((project) => (
                     <div
                         className="project-card"

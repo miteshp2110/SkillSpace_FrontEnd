@@ -1,5 +1,5 @@
 import './Signup.css';
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {AppContext} from "../../../utils/AppContext";
 import {
@@ -8,8 +8,19 @@ import {
     sendEmailVerificationOtp,
     signupStudentRegistration
 } from "../../../utils/controllers/AuthControllers";
+import ScrollReveal from "scrollreveal";
 
 const SignUp = () => {
+
+
+    React.useEffect(() => {
+        ScrollReveal().reveal('.signupContainer', {
+            origin: 'bottom',
+            distance: '50px',
+            duration: 1000,
+            reset: true,
+        });
+    }, []);
 
     const navigate = useNavigate();
 
