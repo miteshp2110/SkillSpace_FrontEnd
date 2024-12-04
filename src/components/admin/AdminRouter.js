@@ -5,6 +5,7 @@ import Footer from "../common/Footer/Footer";
 import Login from "../common/Login/Login";
 import AboutUs from "../common/AboutUs/AboutUs";
 import EmailVerification from "./EmailVerification/EmailVerification";
+import ErrorPage from "../common/ErrorPage/ErrorPage";
 
 function AdminRouter() {
     return(
@@ -15,6 +16,7 @@ function AdminRouter() {
                     <Route path="/" element={<Home />} />
                     <Route path="/about" element={<AboutUs/>} />
                     <Route path="/emailVerification" element={<EmailVerification />} />
+                    <Route path="*" element={<ErrorPage/>} />
                 </Routes>
                 <Footer/>
             </BrowserRouter>

@@ -1,5 +1,4 @@
 import './Navbar.css'
-import {getRole} from "../../../utils/AppController";
 import {ReactComponent as Logo} from "../../../resources/svg/logo.svg"
 import {Link} from "react-router-dom";
 

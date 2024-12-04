@@ -28,6 +28,16 @@ export async function postRequest(url,body=null,header=null){
     try{
         const response = await axios.post(url,body,{headers:header});
 
+        if(response.status === 206){
+            return {
+                "data": {
+                    "Error": true,
+                    "data":response.data
+                }
+            };
+        }
+
+
         return {
             "data": {
                 "Error": false,
