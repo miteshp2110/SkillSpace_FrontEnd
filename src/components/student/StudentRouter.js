@@ -5,6 +5,7 @@ import Footer from "../common/Footer/Footer";
 import AboutUs from "../common/AboutUs/AboutUs";
 import AddProject from "./AddProject/AddProject";
 import Profile from "./Profile/Profile";
+import ErrorPage from "../common/ErrorPage/ErrorPage";
 
 function StudentRouter(){
     return(
@@ -17,6 +18,7 @@ function StudentRouter(){
                 <Route path="/addProject" element={<AddProject />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/addProject" element={<AddProject />} />
+                <Route path="*" element={<ErrorPage/>} />
             </Routes>
             <Footer/>
         </BrowserRouter>
