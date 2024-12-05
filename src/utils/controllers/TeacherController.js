@@ -1,12 +1,10 @@
 import {postRequest} from "../RequestMaker";
 
 
-const host = process.env.REACT_APP_TEACHER_SERVICE_HOST;
-const port = process.env.REACT_APP_TEACHER_SERVICE_PORT;
+const prefixUri = process.env.REACT_APP_TEACHER_SERVICE_URL;
 
-const protocol = "http"
 
-const uri = protocol+"://"+host+":"+port+"/teacher";
+const uri = prefixUri+"/teacher";
 
 export async function getTeacherProfile(jwt){
     const url = uri + "/getProfile"

@@ -1,11 +1,8 @@
 import {postRequest} from "../RequestMaker";
 
-const host = process.env.REACT_APP_STUDENT_SERVICE_HOST;
-const port = process.env.REACT_APP_STUDENT_SERVICE_PORT;
+const prefix = process.env.REACT_APP_STUDENT_SERVICE_URL
 
-const protocol = "http"
-
-const uri = protocol+"://"+host+":"+port+"/student";
+const uri = prefix+"/student";
 
 
 export async function getTotalProjectStudent(jwt){
