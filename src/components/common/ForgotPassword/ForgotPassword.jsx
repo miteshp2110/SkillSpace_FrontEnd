@@ -4,8 +4,10 @@ import {sendForgotPasswordEmail, updatePassword} from "../../../utils/controller
 import ScrollReveal from "scrollreveal";
 import LineBarLoader from "../LoadingComponent/SingleLineBar";
 import NotificationCard from "../../NotificationCard/NotificationCard";
+import {useNavigate} from "react-router-dom";
 
 const ForgotPassword = () => {
+    const navigate = useNavigate();
 
     React.useEffect(() => {
         ScrollReveal().reveal('.loginContainer', {
@@ -98,8 +100,10 @@ const ForgotPassword = () => {
             })
         }
         else{
-            setTimeout(()=>{},2000)
-            window.location.href="/login"
+            setTimeout(()=>{
+                navigate("/")
+            },2000)
+
         }
     }
 
