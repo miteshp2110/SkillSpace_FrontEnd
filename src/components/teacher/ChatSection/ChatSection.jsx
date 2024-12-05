@@ -10,20 +10,26 @@ import {
     getIssueDetailsTeacher,
     postIssueChatTeacher
 } from "../../../utils/controllers/TeacherController";
+import SingleLineBar from "../../common/LoadingComponent/SingleLineBar";
 
 const ChatSection = ({issueId,closeFun}) => {
 
     const [issueDetails, setIssueDetails] = useState();
     const [chats, setChats] = useState([]);
     const [messages, setMessages] = useState("");
+    const [isLoading,setLoading] = useState(false);
 
     const {email,jwt} = useContext(AppContext)
     useEffect(() => {
+
+
         const init = async () => {
+            setLoading(true)
             const res = (await getIssueDetailsTeacher(jwt,issueId)).data.data.issues
             setIssueDetails(res)
             const chats = (await getIssueChatsTeacher(jwt,res.issue_id)).data.data.chats
             setChats(chats)
+            setLoading(false)
         }
         init()
     }, []);
@@ -54,6 +60,7 @@ const ChatSection = ({issueId,closeFun}) => {
 
     return (
         <>
+            {isLoading?<SingleLineBar/>:
             <div className="chat-section-container">
                 <button className={'close-chats-button'} onClick={()=>{closeFun()}}> ←</button>
                 <h1>{issueDetails.issue_title}</h1>
@@ -80,7 +87,7 @@ const ChatSection = ({issueId,closeFun}) => {
                     <button onClick={async () =>{await addMessage()}} >Send</button>
                 </div>
 
-            </div>
+            </div>}
         </>
     )
 }

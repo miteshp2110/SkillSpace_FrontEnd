@@ -12,6 +12,8 @@ import {teacherChecker} from "../../../utils/Helpers";
 import ScrollReveal from "scrollreveal";
 import CountUp from "react-countup";
 import ChatSection from "../ChatSection/ChatSection";
+import SingleLineBar from "../../common/LoadingComponent/SingleLineBar";
+import LoadingScreen from "../../common/LoadingScreen/LoadingScreen";
 
 const Home =()=>{
     const {jwt,logout}  = useContext(AppContext);
@@ -24,12 +26,16 @@ const Home =()=>{
     const [ongoing, setOngoing] = useState(0);
     const [activeIssueCard, setActiveIssueCard] = useState(null);
     const [updateFeedback, setUpdateFeedback] = useState('');
+    const [isLoading,setLoading] = useState(false);
+    const [partLoading,setPartLoading] = useState(false)
 
 
 
 
     useEffect(() => {
         const init = async () => {
+
+            setLoading(true)
 
             const tp = (teacherChecker(await getTotalProjectTeacher(jwt),logout)).data.count
             const op = (teacherChecker(await getOngoingProjectTeacher(jwt),logout)).data.count
@@ -40,6 +46,7 @@ const Home =()=>{
 
             const projectsData = await (teacherChecker(await getAllProjectTeacher(jwt),logout)).data.projects
             setProjectArrays(projectsData);
+            setLoading(false)
         }
         init()
 
@@ -50,6 +57,7 @@ const Home =()=>{
         if(activeTab === "issues"){
             const currPrj = selectedProject
 
+            setPartLoading(true)
             const init = async () => {
                 const iss = (await getAllIssuesTeacher(jwt,selectedProject.id)).data.data.issues
                 currPrj.issues = iss;
@@ -77,6 +85,7 @@ const Home =()=>{
                     issueCardContainer.appendChild(issueCard);
                 })
                 setSelectedProject(currPrj);
+                setPartLoading(false)
 
             }
 
@@ -87,20 +96,23 @@ const Home =()=>{
 
 
     useEffect(() => {
-        ScrollReveal().reveal(".statsContainer, .projects-column", {
-            origin: "bottom",
-            distance: "50px",
-            duration: 1000,
-            easing: "ease-in-out",
-            interval: 500,
-        });
+        if(!isLoading){
+            ScrollReveal().reveal(".statsContainer, .projects-column", {
+                origin: "bottom",
+                distance: "50px",
+                duration: 1000,
+                easing: "ease-in-out",
+                interval: 500,
+            });
+        }
 
-    }, []);
+    }, [isLoading]);
 
 
 
 
     const openProjectDetails = async (id) => {
+        setPartLoading(true)
         const projectD = (await getProjectDetailTeacher(jwt,id)).data.data.projects
         const projectM = (await getProjectMediaTeacher(jwt,id)).data.data.media
         let projectF
@@ -131,6 +143,7 @@ const Home =()=>{
             feedbacks: projectF,
             openIssueCount: openIssueCount,
         }
+        setPartLoading(false)
         setSelectedProject(currProj);
         setActiveTab("details");
         document.body.style.overflow = "hidden";
@@ -162,7 +175,9 @@ const Home =()=>{
             alert("Provide Some Feedback")
             return;
         }
+        setPartLoading(true)
         const res = (teacherChecker( await postFeedbackTeacher(jwt,selectedProject.id,updateFeedback),logout))
+        setPartLoading(false)
         if(res.data.Error === true){
             alert("Some Error Occured")
         }
@@ -174,6 +189,9 @@ const Home =()=>{
 
 
     return (
+        <>
+            {partLoading?<SingleLineBar/>:<></>}
+            {isLoading?<LoadingScreen/>:
         <div className="home-container">
             <div className={"statsContainer"} >
                 <div className={"statItem medStat"}>
@@ -338,7 +356,9 @@ const Home =()=>{
                     </div>
                 </div>
             )}
-        </div>
+        </div>}
+
+            </>
     );
 };
 

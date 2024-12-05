@@ -1,0 +1,31 @@
+/* Container for the loading bar */
+.loading-bar-container {
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    background-color: #f3f4f6;
+    overflow: hidden;
+    border-radius: 5px;
+    z-index: 2000;
+}
+
+/* Moving line */
+.moving-line {
+    z-index: 2000;
+    position: absolute;
+    height: 100%;
+    width: 20%; /* Width of the moving line */
+    background: linear-gradient(to right, #007bff, #00d4ff);
+    border-radius: 5px;
+    animation: move 2s linear infinite;
+}
+
+/* Animation for the moving line */
+@keyframes move {
+    0% {
+        left: -20%; /* Starts outside of the container */
+    }
+    100% {
+        left: 100%; /* Ends outside of the container */
+    }
+}

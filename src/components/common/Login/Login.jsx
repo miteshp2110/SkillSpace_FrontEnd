@@ -1,11 +1,20 @@
 import './Login.css'
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import {login} from "../../../utils/controllers/AuthControllers";
 import {AppContext} from "../../../utils/AppContext";
 import {useNavigate} from "react-router-dom";
 import ScrollReveal from "scrollreveal";
+import LineBarLoader from "../LoadingComponent/SingleLineBar";
+import NotificationCard from "../../NotificationCard/NotificationCard";
+
+
 
 const Login = () => {
+
+
+
+    const [isLoading,setLoading] = useState(false);
+    const [notification, setNotification] = useState(null);
 
 
     React.useEffect(() => {
@@ -39,22 +48,41 @@ const Login = () => {
     async function loginUser(){
         const {isEmailValid,isPasswordValid} = validateEmailAndPassword(tempEmail,password);
         if(!isEmailValid ){
-            alert("Please enter a valid email address");
+            setNotification({
+                id: new Date().getTime(),
+                message:"Invalid Email",
+                type:'error'
+            })
         }
         else{
             if(!isPasswordValid){
-                alert("Password of Minimum length 8");
+                setNotification({
+                    id: new Date().getTime(),
+                    message:"Password of legnth 8",
+                    type:'error'
+                })
             }
             else{
+                setLoading(true);
                 const res = await login(tempEmail, password);
+                setLoading(false);
                 // console.log(res);
                 if(res.data.Error === true){
                     if(res.data.status === 401){
-                        alert("Wrong Password");
+                        setNotification({
+                            id: new Date().getTime(),
+                            message:"Wrong Password",
+                            type:'error'
+                        })
+                        // alert("Wrong Password");
                     }
                     else{
                         if(res.data.status === 404){
-                            alert("User not found");
+                            setNotification({
+                                id: new Date().getTime(),
+                                message:"User Not Found",
+                                type:'error'
+                            })
                         }
                     }
                 }
@@ -72,8 +100,21 @@ const Login = () => {
         }
     }
 
+
     return (
+
+        <>
+            {isLoading?<LineBarLoader/>:<></>}
+            {notification && (
+                <NotificationCard
+                    key={notification.id}
+                    message={notification.message}
+                    type={notification.type}
+                />
+            )}
+
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center',width: '100%', height: '80vh'}}>
+
             <div className="loginContainer">
 
                 <input type={'email'} placeholder={'Email'} className={'inputField'} onChange={event => setTempEmail(event.target.value)} />
@@ -89,6 +130,7 @@ const Login = () => {
                 }}>Login</button>
             </div>
         </div>
+        </>
     )
 }
 

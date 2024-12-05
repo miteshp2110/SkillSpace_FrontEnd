@@ -2,6 +2,8 @@ import './Forgotpassword.css'
 import React, {useState} from "react";
 import {sendForgotPasswordEmail, updatePassword} from "../../../utils/controllers/AuthControllers";
 import ScrollReveal from "scrollreveal";
+import LineBarLoader from "../LoadingComponent/SingleLineBar";
+import NotificationCard from "../../NotificationCard/NotificationCard";
 
 const ForgotPassword = () => {
 
@@ -14,6 +16,8 @@ const ForgotPassword = () => {
         });
     }, []);
 
+    const [isLoading,setLoading] = useState(false);
+    const [notification, setNotification] = useState(null);
     const [email,setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [otp,setOtp] = useState('')
@@ -40,21 +44,39 @@ const ForgotPassword = () => {
     async function forgotPasswordOtp(){
         const {isEmailValid} = validateEmailAndPassword(email);
         if(!isEmailValid){
-            alert("Please enter a valid email address");
+            setNotification({
+                id: new Date().getTime(),
+                message:"Invalid Email",
+                type:'error'
+            })
         }
         else{
+            setLoading(true);
             const res = await sendForgotPasswordEmail(email);
-
+            setLoading(false)
             if(res.data.Error === true){
                 if(res.data.status === 404){
-                    alert("Email Not Found");
+                    setNotification({
+                        id: new Date().getTime(),
+                        message:"Email Not Found",
+                        type:'error'
+                    })
                 }
                 else{
-                    alert("Some Error Occured");
+                    setNotification({
+                        id: new Date().getTime(),
+                        message:"Some Error Occurred",
+                        type:'error'
+                    })
                 }
             }
 
             else{
+                setNotification({
+                    id: new Date().getTime(),
+                    message:"Otp Sent!!",
+                    type:'error'
+                })
                 forgotEmailInput.disabled = true;
                 forgotOtpInput.style.display="block";
                 forgotPasswordInput.style.display="block";
@@ -65,17 +87,32 @@ const ForgotPassword = () => {
     }
 
     async function updatePass(){
+        setLoading(true)
         const res = await updatePassword(email,password,otp)
+        setLoading(false)
         if(res.data.Error === true){
-            alert("Some Error Occured");
+            setNotification({
+                id: new Date().getTime(),
+                message:"Wrong OTP",
+                type:'error'
+            })
         }
         else{
-            alert("Password Updated!")
+            setTimeout(()=>{},2000)
             window.location.href="/login"
         }
     }
 
     return (
+        <>
+            {isLoading?<LineBarLoader/>:<></>}
+            {notification && (
+                <NotificationCard
+                    key={notification.id}
+                    message={notification.message}
+                    type={notification.type}
+                />
+            )}
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '80vh'}}>
             <div className="loginContainer" id={"loginContainer"}>
 
@@ -108,6 +145,7 @@ const ForgotPassword = () => {
 
             </div>
         </div>
+            </>
     )
 }
 export default ForgotPassword

@@ -1,0 +1,56 @@
+/* Notification card container */
+.notification-card {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    padding: 15px 25px;
+    background-color: #000; /* Modern black background */
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    animation: fade-in-out 5.5s ease-in-out forwards;
+    z-index: 2000;
+    min-width: 250px;
+}
+
+.notification-card p{
+    color: white;
+}
+
+/* Message styling */
+.message {
+    font-size: 16px;
+    font-weight: lighter;
+    margin: 0;
+    text-align: center;
+    color: #fff; /* Default white color */
+}
+
+/* Success type - green text */
+.message.success {
+    color: white; /* Bright green */
+}
+
+/* Error type - red text */
+.message.error {
+    color: #ff0000; /* Bright red */
+}
+
+/* Fade-in and fade-out animation */
+@keyframes fade-in-out {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    10% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    90% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}

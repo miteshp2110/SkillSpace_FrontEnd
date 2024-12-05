@@ -9,6 +9,8 @@ import {
     signupStudentRegistration
 } from "../../../utils/controllers/AuthControllers";
 import ScrollReveal from "scrollreveal";
+import LineBarLoader from "../LoadingComponent/SingleLineBar";
+import NotificationCard from "../../NotificationCard/NotificationCard";
 
 const SignUp = () => {
 
@@ -23,6 +25,9 @@ const SignUp = () => {
     }, []);
 
     const navigate = useNavigate();
+
+    const [isLoading,setLoading] = useState(false);
+    const [notification, setNotification] = useState(null);
 
     const {email,setEmail,jwt,setJwt,setRole,setIsLoggedIn} = useContext(AppContext);
     const emailInput = document.getElementById("emailInput");
@@ -91,23 +96,41 @@ const SignUp = () => {
 
         const { isEmailValid, isPasswordValid} = validateEmailAndPassword(tempEmail, password);
         if(!isEmailValid){
-            alert("Please enter a valid email address");
+            setNotification({
+                id: new Date().getTime(),
+                message:"Invalid Email",
+                type:'error'
+            })
         }
 
         else{
             if(!isPasswordValid){
-                alert("Password of Minimum length 8");
+                setNotification({
+                    id: new Date().getTime(),
+                    message:"Password of legnth 8",
+                    type:'error'
+                })
             }
             else {
 
+                setLoading(true);
                 const res1 = await signupStudentRegistration(tempEmail, password);
+                setLoading(false)
                 if(res1.data.Error === true){
                     if(res1.data.status === 409){
-                        alert("Email already exist");
+                        setNotification({
+                            id: new Date().getTime(),
+                            message:"Email Already Exist",
+                            type:'error'
+                        })
                         return false
                     }
                     else{
-                        alert("Some Error Occured")
+                        setNotification({
+                            id: new Date().getTime(),
+                            message:"Some Error Occurred",
+                            type:'error'
+                        })
                         return false;
                     }
                 }
@@ -122,12 +145,20 @@ const SignUp = () => {
     }
 
     async function sendOtp(){
+        setLoading(true)
         const jwt = await signUpEmailPassword()
+        setLoading(false)
         setJwt(jwt)
         if(jwt){
+            setLoading(true)
             const res = await sendEmailVerificationOtp(jwt);
+            setLoading(false)
             if(res.data.Error === true){
-                alert("Some Error Occured")
+                setNotification({
+                    id: new Date().getTime(),
+                    message:"Some Error Occurred",
+                    type:'error'
+                })
             }
             else{
                 emailInput.disabled = true;
@@ -136,7 +167,11 @@ const SignUp = () => {
                 otpInput.style.display = "block";
                 sendOtpButton.style.display = "none";
                 verifyOtpButton.style.display = "block";
-                alert("Otp Sent SuccessFully!!!")
+                setNotification({
+                    id: new Date().getTime(),
+                    message:"OTP sent!",
+                    type:'error'
+                })
 
             }
         }
@@ -144,13 +179,23 @@ const SignUp = () => {
     }
 
     async function verifyEmailOtp(){
+        setLoading(true)
         const res = await confirmEmailVerificationOtp(email,otp);
+        setLoading(false)
         if(res.data.Error === true){
             if(res.data.status === 400){
-                alert("Wrong Otp");
+                setNotification({
+                    id: new Date().getTime(),
+                    message:"Wrong OTP",
+                    type:'error'
+                })
             }
             else{
-                alert("Some Error Occured")
+                setNotification({
+                    id: new Date().getTime(),
+                    message:"Some Error Occurred",
+                    type:'error'
+                })
             }
         }
         else{
@@ -159,12 +204,18 @@ const SignUp = () => {
         }
     }
     useEffect(()=>{
+        setLoading(true)
         fillBranchSelector()
+        setLoading(false)
     },[])
 
     async  function setProfile(){
         if(!name || !branch || !bio || !image){
-            alert("Please enter all Details and Select Image");
+            setNotification({
+                id: new Date().getTime(),
+                message:"Please enter all Details and Select Image",
+                type:'error'
+            })
         }
         else{
             const formData = new FormData();
@@ -173,10 +224,15 @@ const SignUp = () => {
             formData.append("bio",bio)
             formData.append("file", image);
 
+            setLoading(true)
             const res = await completeStudentProfile(formData,jwt);
-            console.log(res)
+            setLoading(false)
             if(res.data.Error === true){
-                alert("Some Error Occured")
+                setNotification({
+                    id: new Date().getTime(),
+                    message:"Some Error Occurred",
+                    type:'error'
+                })
             }
             else{
                 setRole("student")
@@ -195,6 +251,14 @@ const SignUp = () => {
     return (
 
         <>
+            {isLoading?<LineBarLoader/>:<></>}
+            {notification && (
+                <NotificationCard
+                    key={notification.id}
+                    message={notification.message}
+                    type={notification.type}
+                />
+            )}
             <div className="signup">
 
                 <div className="signupContainer">

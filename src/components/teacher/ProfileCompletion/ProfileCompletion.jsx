@@ -3,8 +3,13 @@ import React, {useContext, useEffect, useState} from "react";
 import {completeTeacherProfile, getDepartments} from "../../../utils/controllers/AuthControllers";
 import {AppContext} from "../../../utils/AppContext";
 import ScrollReveal from "scrollreveal";
+import LineBarLoader from "../../common/LoadingComponent/SingleLineBar";
+import NotificationCard from "../../NotificationCard/NotificationCard";
 
 const ProfileCompletion = () => {
+
+    const [isLoading,setLoading] = useState(false);
+    const [notification, setNotification] = useState(null);
 
 
     React.useEffect(() => {
@@ -55,13 +60,26 @@ const ProfileCompletion = () => {
         formData.append('name', name);
         formData.append("department", department);
 
+        setLoading(true);
         const res = await completeTeacherProfile(formData,jwt)
+        setLoading(false)
         if(res.data.Error === true){
-            alert("Some Error Occured")
+            setNotification({
+                id: new Date().getTime(),
+                message:"Some Error occurred",
+                type:'error'
+            })
         }
         else{
+            setNotification({
+                id: new Date().getTime(),
+                message:"Profile Complete",
+                type:'error'
+            })
             localStorage.removeItem('profile');
-            window.location.href = "/"
+            setTimeout(()=>{
+                window.location.href = "/"
+            },1500)
         }
     };
 
@@ -70,6 +88,15 @@ const ProfileCompletion = () => {
 
 
     return (
+        <>
+            {isLoading?<LineBarLoader/>:<></>}
+            {notification && (
+                <NotificationCard
+                    key={notification.id}
+                    message={notification.message}
+                    type={notification.type}
+                />
+            )}
         <div style={{height:'80vh',display:'flex',flexDirection:'column',justifyContent:'center'}}>
             <div className="form-container">
 
@@ -107,6 +134,7 @@ const ProfileCompletion = () => {
             </div>
 
         </div>
+            </>
     )
 }
 

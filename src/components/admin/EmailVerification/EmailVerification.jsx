@@ -1,13 +1,17 @@
 import './Emailverification.css'
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {AppContext} from "../../../utils/AppContext";
 import {confirmEmailVerificationOtp, sendEmailVerificationOtp} from "../../../utils/controllers/AuthControllers";
 import {useNavigate} from "react-router-dom";
+import LineBarLoader from "../../common/LoadingComponent/SingleLineBar";
+import NotificationCard from "../../NotificationCard/NotificationCard";
 
 const EmailVerification = () => {
     const navigate = useNavigate();
 
     const [otp, setOtp] = useState('')
+    const [isLoading,setLoading] = useState(false);
+    const [notification, setNotification] = useState(null);
     const {email,jwt} = useContext(AppContext)
 
     let requestBtn
@@ -23,11 +27,22 @@ const EmailVerification = () => {
     }, [email]);
 
     async function sendOtp(){
+        setLoading(true)
         const res = await sendEmailVerificationOtp(jwt)
+        setLoading(false)
         if(res.data.Error === true){
-            alert("Some Error Occured")
+            setNotification({
+                id: new Date().getTime(),
+                message:"Some Error Occurred",
+                type:'error'
+            })
         }
         else{
+            setNotification({
+                id: new Date().getTime(),
+                message:"OTP sent!!",
+                type:'error'
+            })
             otpIn.style.display = "block"
             requestBtn.style.display = "none"
             verifyBtn.style.display = "block"
@@ -35,12 +50,26 @@ const EmailVerification = () => {
     }
 
     async function verifyOtp(){
+        setLoading(true)
         const res = await confirmEmailVerificationOtp(email,otp)
+        setLoading(false)
         if(res.data.Error === true){
-            alert("Wrong Otp");
+            setNotification({
+                id: new Date().getTime(),
+                message:"Wrong OTP",
+                type:'error'
+            })
         }
         else{
-            navigate("/")
+            setNotification({
+                id: new Date().getTime(),
+                message:"Email Verified",
+                type:'error'
+            })
+
+            setTimeout(()=>{
+                navigate("/")
+            },1500)
         }
 
     }
@@ -48,7 +77,17 @@ const EmailVerification = () => {
 
 
     return (
-        <div className="emailverification">
+        <>
+            {isLoading?<LineBarLoader/>:<></>}
+            {notification && (
+                <NotificationCard
+                    key={notification.id}
+                    message={notification.message}
+                    type={notification.type}
+                />
+            )}
+
+            <div className="emailverification">
             <div className={"emailverificationContainer"}>
                 <input disabled={true} className={'inputField'} type="email" placeholder="Email" id={'emailIn'} />
 
@@ -66,6 +105,7 @@ const EmailVerification = () => {
                 >Verify OTP</button>
             </div>
         </div>
+            </>
     )
 }
 export default EmailVerification
