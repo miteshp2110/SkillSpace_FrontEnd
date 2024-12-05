@@ -9,6 +9,10 @@ import CountUp from 'react-countup';
 import React, {useContext, useState} from "react";
 import {AppContext} from "../../../utils/AppContext";
 import ScrollReveal from "scrollreveal";
+import LineBarLoader from "../../common/LoadingComponent/SingleLineBar";
+import NotificationCard from "../../NotificationCard/NotificationCard";
+import SingleLineBar from "../../common/LoadingComponent/SingleLineBar";
+import LoadingScreen from "../../common/LoadingScreen/LoadingScreen";
 
 const Home =()=>{
     const {jwt,logout} = useContext(AppContext);
@@ -19,6 +23,9 @@ const Home =()=>{
      const [tempEmail,setTempEmail] = useState("");
      const [password,setPassword] = useState("");
      const [role,setRole] = useState("");
+    const [isLoading,setLoading] = useState(false);
+    const [notification, setNotification] = useState(null);
+    const [partLoading,setPartLoading] = useState(false);
 
 
     function validateEmailAndPassword(email, password) {
@@ -38,39 +45,77 @@ const Home =()=>{
         const {isEmailValid,isPasswordValid} = validateEmailAndPassword(tempEmail, password);
 
         if(!isEmailValid){
-            alert("Please enter a valid email address");
+            setNotification({
+                id: new Date().getTime(),
+                message:"Enter valid Email",
+                type:'error'
+            })
         }
         else{
             if(!isPasswordValid){
-                alert("Please enter minimum 8 digit Password");
+                setNotification({
+                    id: new Date().getTime(),
+                    message:"Password of min length 8",
+                    type:'error'
+                })
             }
             else{
                 if(!role){
-                    alert("Please select Role");
+                    setNotification({
+                        id: new Date().getTime(),
+                        message:"Select a Role",
+                        type:'error'
+                    })
                 }
                 else{
                     if(role==='teacher'){
+                        setPartLoading(true);
                         const res = await addTeacher(jwt,tempEmail,password);
+                        setPartLoading(false);
                         if(res.data.Error === true){
                             if(res.data.status === 403){
-                                alert("Email Already in Use");
+                                setNotification({
+                                    id: new Date().getTime(),
+                                    message:"Email Already in Use",
+                                    type:'error'
+                                })
                             }
                         }
                         else{
-                            window.location.reload();
+                            setNotification({
+                                id: new Date().getTime(),
+                                message:"User Added",
+                                type:'error'
+                            })
+                            setTimeout(()=>{
+                                window.location.reload();
+                            },2000)
+
                         }
                     }
                     else{
                         if(role==='admin'){
+                            setPartLoading(true)
                             const res = await addAdmin(jwt,tempEmail,password);
-                            console.log(res)
+                            setPartLoading(false)
                             if(res.data.Error === true){
                                 if(res.data.status === 403){
-                                    alert("Email Already in Use");
+                                    setNotification({
+                                        id: new Date().getTime(),
+                                        message:"Email Already in Use",
+                                        type:'error'
+                                    })
                                 }
                             }
                             else{
-                                window.location.reload();
+                                setNotification({
+                                    id: new Date().getTime(),
+                                    message:"User Added",
+                                    type:'error'
+                                })
+                                setTimeout(()=>{
+                                    window.location.reload();
+                                },2000)
                             }
                         }
                     }
@@ -104,84 +149,115 @@ const Home =()=>{
 
     React.useEffect(() => {
 
-        const listContainer = document.getElementById("listContainer")
+
 
         const initData = async ()=>{
+            setLoading(true)
             const tp = checkerFunction(await getTotalProjectAdmin(jwt))
             const cp = checkerFunction(await getCompletedProjectAdmin(jwt))
             const op = checkerFunction(await getOngoingProjectAdmin(jwt))
+            setLoading(false)
             setTotal(tp.data.count)
             setOngoing(op.data.count)
             setCompleted(cp.data.count)
-            const teachers = (checkerFunction(await getAllTeacherAdmin(jwt))).data.teachers
-            const admins = (checkerFunction(await getAllAdmin(jwt))).data.admins
-
-            admins.forEach((teacher)=>{
-                const listItemCard = document.createElement('div');
-                listItemCard.classList.add('listItemCard');
-
-                const listItemId = document.createElement("div")
-                listItemId.classList.add("listItemId")
-                listItemId.innerHTML=(teacher.role).toString().toUpperCase();
-
-                const listItemEmail = document.createElement('div')
-                listItemEmail.classList.add('listItemEmail')
-                listItemEmail.innerHTML=teacher.email;
-
-                const listItemVerified = document.createElement('div')
-                listItemVerified.classList.add('listItemVerified')
-                listItemVerified.innerHTML=(teacher.emailStatus).toString().toUpperCase();
-
-                listItemCard.appendChild(listItemId)
-                listItemCard.appendChild(listItemEmail)
-                listItemCard.appendChild(listItemVerified)
-
-                listContainer.appendChild(listItemCard)
-            })
 
 
-            teachers.forEach((teacher)=>{
-                const listItemCard = document.createElement('div');
-                listItemCard.classList.add('listItemCard');
-
-                const listItemId = document.createElement("div")
-                listItemId.classList.add("listItemId")
-                listItemId.innerHTML=(teacher.role).toString().toUpperCase();
-
-                const listItemEmail = document.createElement('div')
-                listItemEmail.classList.add('listItemEmail')
-                listItemEmail.innerHTML=teacher.email;
-
-                const listItemVerified = document.createElement('div')
-                listItemVerified.classList.add('listItemVerified')
-                listItemVerified.innerHTML=(teacher.emailStatus).toString().toUpperCase();
-
-                listItemCard.appendChild(listItemId)
-                listItemCard.appendChild(listItemEmail)
-                listItemCard.appendChild(listItemVerified)
-
-                listContainer.appendChild(listItemCard)
-
-            })
 
 
         }
 
         initData();
-        ScrollReveal().reveal('.statsContainer, .adminMainContainer', {
-            origin: 'bottom',
-            distance: '50px',
-            duration: 1000,
-            reset: true,
-        });
+
 
     }, []);
+
+    React.useEffect(()=>{
+        if(!isLoading){
+
+            const init = async () => {
+                const listContainer = document.getElementById("listContainer")
+                setPartLoading(true)
+                const teachers = (checkerFunction(await getAllTeacherAdmin(jwt))).data.teachers
+                const admins = (checkerFunction(await getAllAdmin(jwt))).data.admins
+                setPartLoading(false)
+
+                admins.forEach((teacher)=>{
+                    const listItemCard = document.createElement('div');
+                    listItemCard.classList.add('listItemCard');
+
+                    const listItemId = document.createElement("div")
+                    listItemId.classList.add("listItemId")
+                    listItemId.innerHTML=(teacher.role).toString().toUpperCase();
+
+                    const listItemEmail = document.createElement('div')
+                    listItemEmail.classList.add('listItemEmail')
+                    listItemEmail.innerHTML=teacher.email;
+
+                    const listItemVerified = document.createElement('div')
+                    listItemVerified.classList.add('listItemVerified')
+                    listItemVerified.innerHTML=(teacher.emailStatus).toString().toUpperCase();
+
+                    listItemCard.appendChild(listItemId)
+                    listItemCard.appendChild(listItemEmail)
+                    listItemCard.appendChild(listItemVerified)
+
+                    listContainer.appendChild(listItemCard)
+                })
+
+
+                teachers.forEach((teacher)=>{
+                    const listItemCard = document.createElement('div');
+                    listItemCard.classList.add('listItemCard');
+
+                    const listItemId = document.createElement("div")
+                    listItemId.classList.add("listItemId")
+                    listItemId.innerHTML=(teacher.role).toString().toUpperCase();
+
+                    const listItemEmail = document.createElement('div')
+                    listItemEmail.classList.add('listItemEmail')
+                    listItemEmail.innerHTML=teacher.email;
+
+                    const listItemVerified = document.createElement('div')
+                    listItemVerified.classList.add('listItemVerified')
+                    listItemVerified.innerHTML=(teacher.emailStatus).toString().toUpperCase();
+
+                    listItemCard.appendChild(listItemId)
+                    listItemCard.appendChild(listItemEmail)
+                    listItemCard.appendChild(listItemVerified)
+
+                    listContainer.appendChild(listItemCard)
+
+
+                })
+            }
+
+
+            init()
+
+
+            ScrollReveal().reveal('.statsContainer, .adminMainContainer', {
+                origin: 'bottom',
+                distance: '50px',
+                duration: 1000,
+                reset: true,
+            });
+        }
+    },[isLoading])
 
 
 
 
     return <>
 
+        {partLoading?<LineBarLoader/>:<></>}
+        {notification && (
+            <NotificationCard
+                key={notification.id}
+                message={notification.message}
+                type={notification.type}
+            />
+        )}
+        {isLoading?<LoadingScreen/>:
         <div className={"adminHomeContainer"}>
             <div className={"statsContainer"}>
                 <div className={"statItem"}>
@@ -235,7 +311,7 @@ const Home =()=>{
                 </div>
 
             </div>
-        </div>
+        </div>}
     </>
 }
 
