@@ -17,7 +17,6 @@ function StudentRouter(){
                 <Route path="/about" element={<AboutUs/>} />
                 <Route path="/addProject" element={<AddProject />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/addProject" element={<AddProject />} />
                 <Route path="*" element={<ErrorPage/>} />
             </Routes>
             <Footer/>

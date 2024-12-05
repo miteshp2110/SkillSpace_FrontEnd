@@ -40,7 +40,6 @@ const SignUp = () => {
 
 
     const openRightContainer = async () => {
-        await fillBranchSelector();
         signupContainerRight.classList.remove("deactiveContainer");
         signupContainerLeft.classList.remove("activeContainer");
         signupContainerRight.classList.add("activeContainer");
