@@ -321,7 +321,7 @@ const Home = () => {
                         )}
                         {activeTab === "feedback" && (
                             <div className="feedback-tab">
-                                <h3>{selectedProject.feedbacks}</h3>
+                                <h3>{selectedProject.feedbacks === "" ? "No Feedbacks" : selectedProject.feedbacks}</h3>
 
                             </div>
                         )}
