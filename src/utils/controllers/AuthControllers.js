@@ -1,15 +1,15 @@
 import {getRequest, postRequest} from "../RequestMaker";
 
-const host = process.env.REACT_APP_AUTH_SERVICE_HOST;
-const port = process.env.REACT_APP_AUTH_SERVICE_PORT;
+
+const prefixURL = process.env.REACT_APP_AUTH_SERVICE_URL;
 
 export async function getDepartments(){
-    const url = `http://${host}:${port}/departments`;
+    const url = `${prefixURL}/departments`;
     return await getRequest(url);
 }
 
 export async function login(email,password){
-    const url = `http://${host}:${port}/login`;
+    const url = `${prefixURL}/login`;
     let body ={
         "email":email,
         "password":password
@@ -18,7 +18,7 @@ export async function login(email,password){
 }
 
 export async function signupStudentRegistration(email,password){
-    const url = `http://${host}:${port}/signupStudent`;
+    const url = `${prefixURL}/signupStudent`;
     let body ={
         "email":email,
         "password":password
@@ -27,7 +27,7 @@ export async function signupStudentRegistration(email,password){
 }
 
 export async function completeStudentProfile(formData,token){
-    const url = `http://${host}:${port}/completeProfile/student`;
+    const url = `${prefixURL}/completeProfile/student`;
     let header = {
         Authorization:"Bearer "+token
     }
@@ -36,7 +36,7 @@ export async function completeStudentProfile(formData,token){
 }
 
 export async function completeTeacherProfile(formData,token){
-    const url = `http://${host}:${port}/completeProfile/teacher`;
+    const url = `${prefixURL}/completeProfile/teacher`;
     let header = {
         Authorization:"Bearer "+token
     }
@@ -45,7 +45,7 @@ export async function completeTeacherProfile(formData,token){
 
 
 export async function sendEmailVerificationOtp(token){
-    const url = `http://${host}:${port}/requestOtp`;
+    const url = `${prefixURL}/requestOtp`;
     let header = {
         Authorization:"Bearer "+token
     }
@@ -53,7 +53,7 @@ export async function sendEmailVerificationOtp(token){
 }
 
 export async function confirmEmailVerificationOtp(email,otp){
-    const url = `http://${host}:${port}/verifyOtp`;
+    const url = `${prefixURL}/verifyOtp`;
     let body={
         "email":email,
         "code":otp
@@ -62,14 +62,14 @@ export async function confirmEmailVerificationOtp(email,otp){
 }
 
 export async function sendForgotPasswordEmail(email){
-    const url = `http://${host}:${port}/requestForgotPassword`;
+    const url = `${prefixURL}/requestForgotPassword`;
     let body = {
         "email":email
     }
     return await postRequest(url,body,null)
 }
 export async function updatePassword(email,newPassword,otp){
-    const url = `http://${host}:${port}/updatePassword`;
+    const url = `${prefixURL}/updatePassword`;
     let body={
         "email":email,
         "newPassword":newPassword,

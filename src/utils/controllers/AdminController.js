@@ -1,15 +1,8 @@
 import {postRequest} from "../RequestMaker";
 
+const prefixUri = process.env.REACT_APP_ADMIN_SERVICE_URL
 
-const host = process.env.REACT_APP_ADMIN_SERVICE_HOST;
-const port = process.env.REACT_APP_ADMIN_SERVICE_PORT;
-
-const protocol = "http"
-
-const uri = protocol+"://"+host+":"+port+"/admin";
-
-const expiredToken = "eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoidGVhY2hlciIsInN1YiI6ImtpbmdwYWxpd2FsNovwbAom8fXiMrZekKc9YdH4Rq6wUDj9XL6zpH3zTmMhorBe7I7"
-const invalidToken = "eyJhbGciOiJIUzM4NCJ9.eyJyb2xlIjoidGVhY2hlciIc9YdH4Rq6wUDj9XL6zpH3zTmMhorBe7I7"
+const uri = prefixUri+"/admin";
 
 
 export async function getAllAdmin(jwt){
