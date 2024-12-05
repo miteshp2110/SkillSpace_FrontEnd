@@ -8,7 +8,7 @@
     border-radius: 10px;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
     animation: fade-in-out 5.5s ease-in-out forwards;
-    z-index: 1000;
+    z-index: 2000;
     min-width: 250px;
 }
 

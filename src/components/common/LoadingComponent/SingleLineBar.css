@@ -6,10 +6,12 @@
     background-color: #f3f4f6;
     overflow: hidden;
     border-radius: 5px;
+    z-index: 2000;
 }
 
 /* Moving line */
 .moving-line {
+    z-index: 2000;
     position: absolute;
     height: 100%;
     width: 20%; /* Width of the moving line */

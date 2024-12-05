@@ -18,6 +18,9 @@ import {
 import {AppContext} from "../../../utils/AppContext";
 import CountUp from "react-countup";
 import {useNavigate} from "react-router-dom";
+import LoadingScreen from "../../common/LoadingScreen/LoadingScreen";
+import NotificationCard from "../../NotificationCard/NotificationCard";
+import SingleLineBar from "../../common/LoadingComponent/SingleLineBar";
 
 const Home = () => {
     const {jwt,logout}  = useContext(AppContext);
@@ -32,6 +35,9 @@ const Home = () => {
     const [issueTitle,setIssueTitle] = useState("");
     const [issueDescription,setIssueDescription] = useState("");
     const [activeIssueCard, setActiveIssueCard] = useState(null);
+    const [isLoading,setLoading] = useState(false);
+    const [notification, setNotification] = useState(null);
+    const [partLoading,setPartLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -39,7 +45,7 @@ const Home = () => {
 
     useEffect(() => {
         const init = async () => {
-
+            setLoading(true)
             const tp = (checkerFunction(await getTotalProjectStudent(jwt),logout)).data.count
             const op = (checkerFunction(await getOngoingProjectStudent(jwt),logout)).data.count
             const cp = (checkerFunction(await getCompletedProjectStudent(jwt),logout)).data.count
@@ -49,41 +55,50 @@ const Home = () => {
 
             const projectsData = await (checkerFunction(await getAllProjectsStudent(jwt,logout))).data.projects
             setProjectArrays(projectsData);
+            setLoading(false)
         }
 
         init()
     }, []);
 
+
+    async function loadIssuetab (){
+        setPartLoading(true)
+        const currPrj = selectedProject
+        const iss = (await getAllIssuesStudent(jwt,selectedProject.id)).data.data.issues
+        currPrj.issues = iss;
+        const issueCardContainer = document.getElementById("issueCardContainer");
+        iss.forEach((issue)=>{
+            const issueCard = document.createElement("div");
+            issueCard.key = issue.issue_id;
+            issueCard.onclick = ()=>{
+                setActiveIssueCard(issueCard.key);
+                toggleActiveIssueTab(true)
+            }
+            issueCard.classList.add("issue-card");
+
+            const issueCardTitle = document.createElement("div");
+            issueCardTitle.classList.add("issue-card-title");
+            issueCardTitle.innerText = issue.issue_title;
+
+            const issueCardStatus = document.createElement("div");
+            issueCardStatus.classList.add("issue-card-status");
+            issueCardStatus.innerText = issue.issue_status===true?"Active":"Inactive";
+
+            issueCard.appendChild(issueCardTitle);
+            issueCard.appendChild(issueCardStatus);
+            issueCardContainer.appendChild(issueCard);
+        })
+        setSelectedProject(currPrj);
+        setPartLoading(false)
+    }
+
     useEffect(() => {
         if(activeTab === "issues"){
-            const currPrj = selectedProject
+
 
             const init = async () => {
-                const iss = (await getAllIssuesStudent(jwt,selectedProject.id)).data.data.issues
-                currPrj.issues = iss;
-                const issueCardContainer = document.getElementById("issueCardContainer");
-                iss.forEach((issue)=>{
-                    const issueCard = document.createElement("div");
-                    issueCard.key = issue.issue_id;
-                    issueCard.onclick = ()=>{
-                        setActiveIssueCard(issueCard.key);
-                        toggleActiveIssueTab(true)
-                    }
-                    issueCard.classList.add("issue-card");
-
-                    const issueCardTitle = document.createElement("div");
-                    issueCardTitle.classList.add("issue-card-title");
-                    issueCardTitle.innerText = issue.issue_title;
-
-                    const issueCardStatus = document.createElement("div");
-                    issueCardStatus.classList.add("issue-card-status");
-                    issueCardStatus.innerText = issue.issue_status===true?"Active":"Inactive";
-
-                    issueCard.appendChild(issueCardTitle);
-                    issueCard.appendChild(issueCardStatus);
-                    issueCardContainer.appendChild(issueCard);
-                })
-                setSelectedProject(currPrj);
+                await loadIssuetab()
 
             }
 
@@ -94,20 +109,23 @@ const Home = () => {
 
 
     useEffect(() => {
-        ScrollReveal().reveal(".statsContainer, .projects-column", {
-            origin: "bottom",
-            distance: "50px",
-            duration: 1000,
-            easing: "ease-in-out",
-            interval: 500,
-        });
+       if(!isLoading){
+           ScrollReveal().reveal(".statsContainer, .projects-column", {
+               origin: "bottom",
+               distance: "50px",
+               duration: 1000,
+               easing: "ease-in-out",
+               interval: 500,
+           });
+       }
 
-    }, []);
+    }, [isLoading]);
 
 
 
 
     const openProjectDetails = async (id) => {
+        setPartLoading(true)
         const projectD = (await getProjectDetailsStudent(jwt,id)).data.data.projects
         const projectM = (await getProjectMediaStudent(jwt,id)).data.data.media
         let projectF
@@ -137,6 +155,7 @@ const Home = () => {
                 feedbacks: projectF,
                 openIssueCount: openIssueCount,
             }
+            setPartLoading(false)
         setSelectedProject(currProj);
         setActiveTab("details");
         document.body.style.overflow = "hidden";
@@ -164,13 +183,24 @@ const Home = () => {
     }
 
     async function addStudentIssue(){
+        setPartLoading(true)
         const res = await addIssueStudent(jwt,selectedProject.id,issueTitle,issueDescription)
+        setPartLoading(false)
         if(res.data.Error === true){
-            alert("Some Error Occured")
+            setNotification({
+                id: new Date().getTime(),
+                message:"Some Error Occurred",
+                type:'error'
+            })
         }
         else{
-            alert("Issue Added...")
-            window.location.reload();
+            setNotification({
+                id: new Date().getTime(),
+                message:"Issue Added...",
+                type:'error'
+            })
+            toggleAddIssueTab()
+            await loadIssuetab()
         }
     }
 
@@ -204,6 +234,16 @@ const Home = () => {
 
 
     return (
+        <>
+            {partLoading?<SingleLineBar/>:<></>}
+            {notification && (
+                <NotificationCard
+                    key={notification.id}
+                    message={notification.message}
+                    type={notification.type}
+                />
+            )}
+            {isLoading?<LoadingScreen/>:
         <div className="home-container">
             <div className={"statsContainer"} >
                 <div className={"statItem medStat"}>
@@ -359,7 +399,8 @@ const Home = () => {
                     </div>
                 </div>
             )}
-        </div>
+        </div>}
+        </>
     );
 };
 

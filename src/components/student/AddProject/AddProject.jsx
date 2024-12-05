@@ -10,6 +10,8 @@ import {
     getProfileStudent
 } from "../../../utils/controllers/StudentController";
 import {useNavigate} from "react-router-dom";
+import LineBarLoader from "../../common/LoadingComponent/SingleLineBar";
+import NotificationCard from "../../NotificationCard/NotificationCard";
 
 const AddProject = () => {
     const navigate = useNavigate();
@@ -20,6 +22,8 @@ const AddProject = () => {
     const [description, setDescription] = useState("");
     const [teacher, setTeacher] = useState("");
     const [Files, setFiles] = useState([]);
+    const [isLoading,setLoading] = useState(false);
+    const [notification, setNotification] = useState(null);
 
 
 
@@ -27,8 +31,9 @@ const AddProject = () => {
         const teacherSelect = document.getElementById("teacher");
 
         const init = async () => {
-            const res =(checkerFunction(await getProfileStudent(jwt),logout)).data;
 
+
+            const res =(checkerFunction(await getProfileStudent(jwt),logout)).data;
             const teachers = (checkerFunction(await getAllTeacherStudent(jwt))).data
             setStudentId(res.id)
             teachers.forEach((teacher) => {
@@ -57,7 +62,11 @@ const AddProject = () => {
         setFiles(dt);
 
         if (files.length + images.length > 4) {
-            alert("You can only upload up to 4 images.");
+            setNotification({
+                id: new Date().getTime(),
+                message:"Only 4 Image Allowed",
+                type:'error'
+            })
             return;
         }
         const previewImages = files.map((file) => URL.createObjectURL(file));
@@ -71,26 +80,50 @@ const AddProject = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        const id = (checkerFunction(await addProject(jwt,studentId,teacher,title,description))).data.id
+        setLoading(true)
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
 
+        const id = (checkerFunction(await addProject(jwt,studentId,teacher,title,description))).data.id
         Array.from(Files).forEach((file) => {
             formData.append("media", file);
         })
 
         formData.append("project_id", id);
         const res = await addProjectMedia(jwt,formData);
-
+        setLoading(false)
         if(res.data.Error === true){
-            alert("Some Error Occured")
+            setNotification({
+                id: new Date().getTime(),
+                message:"Some Error Occurred",
+                type:'error'
+            })
             window.location.reload();
         }
         else{
-            alert("Project Added...")
+            setNotification({
+                id: new Date().getTime(),
+                message:"Project Added",
+                type:'error'
+            })
+            setTimeout(()=>{},1500)
             navigate("/")
         }
     };
 
     return (
+        <>
+            {isLoading?<LineBarLoader/>:<></>}
+            {notification && (
+                <NotificationCard
+                    key={notification.id}
+                    message={notification.message}
+                    type={notification.type}
+                />
+            )}
+
         <div style={{height:'100vh'}}>
         <div className="add-project-container">
             <h1 className="title">Add a New Project</h1>
@@ -161,6 +194,7 @@ const AddProject = () => {
             </form>
         </div>
         </div>
+            </>
     );
 };
 

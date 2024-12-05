@@ -1,10 +1,9 @@
 import './Login.css'
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import {login} from "../../../utils/controllers/AuthControllers";
 import {AppContext} from "../../../utils/AppContext";
 import {useNavigate} from "react-router-dom";
 import ScrollReveal from "scrollreveal";
-import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import LineBarLoader from "../LoadingComponent/SingleLineBar";
 import NotificationCard from "../../NotificationCard/NotificationCard";
 

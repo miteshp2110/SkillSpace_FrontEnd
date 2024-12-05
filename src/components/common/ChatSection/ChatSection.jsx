@@ -5,26 +5,32 @@ import {
     getIssueDetailsStudent, markIssueSolvedStudent,
     postIssueChat
 } from "../../../utils/controllers/StudentController";
+import SingleLineBar from "../LoadingComponent/SingleLineBar";
 
 const ChatSection = ({issueId,closeFun}) => {
 
     const [issueDetails, setIssueDetails] = useState();
     const [chats, setChats] = useState([]);
     const [messages, setMessages] = useState("");
+    const [isLoading,setLoading] = useState(false);
 
     const {email,jwt} = useContext(AppContext)
     useEffect(() => {
         const init = async () => {
+            setLoading(true)
             const res = (await getIssueDetailsStudent(jwt,issueId)).data.data.issues
             setIssueDetails(res)
             const chats = (await getIssueChatsStudent(jwt,res.issue_id)).data.data.chats
             setChats(chats)
+            setLoading(false)
         }
         init()
     }, []);
 
     async function solveIssue(){
+        setLoading(true)
         const res = (await markIssueSolvedStudent(jwt,issueDetails.issue_id))
+        setIssueDetails(false)
         if(res.data.Error){
             alert("Some Error Occured")
         }
@@ -59,6 +65,7 @@ const ChatSection = ({issueId,closeFun}) => {
 
     return (
         <>
+            {isLoading?<SingleLineBar/>:
             <div className="chat-section-container">
                 <button className={'close-chats-button'} onClick={()=>{closeFun()}}> ←</button>
                 <h1>{issueDetails.issue_title}</h1>
@@ -88,7 +95,7 @@ const ChatSection = ({issueId,closeFun}) => {
                     <button onClick={async () =>{await addMessage()}} >Send</button>
                 </div>
 
-            </div>
+            </div>}
         </>
     )
 }
